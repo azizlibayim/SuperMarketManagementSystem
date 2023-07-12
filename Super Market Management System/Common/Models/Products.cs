@@ -23,6 +23,6 @@ namespace Super_Market_Management_System.Common.Models
         public decimal Price { get; set; }
         public Category Category { get; set; }
         public int Quantity { get; set; }
-        public string Code { get; set; }
+        
     }
 }
