@@ -1,0 +1,5 @@
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.csproj.AssemblyReference.cache
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.AssemblyInfoInputs.cache
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.AssemblyInfo.cs
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.csproj.CoreCompileInputs.cache
