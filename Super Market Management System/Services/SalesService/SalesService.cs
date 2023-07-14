@@ -25,29 +25,7 @@ namespace Super_Market_Management_System.Services.SalesService
 
 
 
-        //public void RemoveProductByName(string name )
-        //{
-        //    var existingProduct = Products.FirstOrDefault(x => x.Name == name);
-
-        //    if (existingProduct == null)
-        //        throw new Exception($"{name} not found!");
-        //    Products = Products.Where(x => x.Name != name).ToList();
-        //}
-        //public void RemoveProductByPrice (decimal price)
-        //{
-        //    var existingProduct = Products.FirstOrDefault(x=>x.Price == price);
-        //    if (existingProduct == null)
-        //        throw new Exception($"{price} not found!");
-        //    Products = Products.Where (x => x.Price != price).ToList();
-        //}
-
-        //public void RemoveProductByCategory(Category category)
-        //{
-        //    var existingProduct = Products.FirstOrDefault(x => x.Category == category);
-        //    if (existingProduct == null)
-        //        throw new Exception($"{category} not found!");
-        //    Products = Products.Where(x => x.Category != category).ToList();
-        //}
+       
 
        
         //public void UpdateProductQuantity(string name, int Id, int quantity)
@@ -69,63 +47,9 @@ namespace Super_Market_Management_System.Services.SalesService
         //}
        
 
-            //Console.WriteLine("Enter the new name:");
-            //string newName = Console.ReadLine();
-
-            //Console.WriteLine("Enter the new quantity:");
-            //int newQuantity = int.Parse(Console.ReadLine());
-
-            //Console.WriteLine("Available categories:");
-            //foreach (Category category in Enum.GetValues(typeof(Category)))
-            //{
-            //    Console.WriteLine($"{(int)category}. {category}");
-            //}
-            //Console.WriteLine("Enter the category (number) of the new product:");
-            //int categoryNumber = int.Parse(Console.ReadLine());
-
-            //if (!Enum.IsDefined(typeof(Category), categoryNumber))
-            //{
-            //    Console.WriteLine("Invalid category number!");
-            //    return;
-            //}
-            //Category newCategory = (Category)categoryNumber;
-
-            //Console.WriteLine("Enter the new price:");
-            //decimal newPrice = decimal.Parse(Console.ReadLine());
+            
          
-        //public static void MenuProducts() 
-        //{
-        //    try
-        //    {
-        //        var products = hospitalService.GetDoctors();
-
-        //        var table = new ConsoleTable("Id", "Name", "Category",
-        //            "Price", "Quantity");
-
-        //        if (products.Quantity == 0)
-        //        {
-        //            Console.WriteLine("No products yet.");
-        //            return;
-        //        }
-
-        //        foreach (var product in products)
-        //        {
-        //            table.AddRow(product.Id, product.Name, product.Cateory,
-        //                product.Price, product.Quantity);
-        //        }
-
-        //        table.Write();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Oops! Got an error!");
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //}
-           
-        }
-    }
-
+    
         
         
 

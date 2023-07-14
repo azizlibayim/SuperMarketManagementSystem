@@ -74,9 +74,9 @@ namespace Super_Market_Management_System.Services.ProductService
             existingProduct.Quantity = newQuantity;
             existingProduct.Category = newCategory;
             existingProduct.Price = newPrice;
-            Console.WriteLine($"Product with ID {Id} has been updated.");
+            
         }
-        //UpdateProductById(Id, newName, newQuantity, newCategory, newPrice);
+
         public static void ShowProductsByCategory(int categoryNumber)
         {
 
@@ -85,20 +85,9 @@ namespace Super_Market_Management_System.Services.ProductService
                 Console.WriteLine("Invalid category number!");
                 return;
             }
-
             Category selectedCategory = (Category)categoryNumber;
-
-            //Console.WriteLine($"Showing products in the {selectedCategory} category:");
-
             var productsInCategory = Products.Where(x => x.Category == selectedCategory);
-
-            //foreach (var product in productsInCategory)
-            //{
-            //    Console.WriteLine($"Name: {product.Name}");
-            //    Console.WriteLine($"Quantity: {product.Quantity}");
-            //    Console.WriteLine($"Price: {product.Price}");
-            //    Console.WriteLine();
-            //}
+            Console.WriteLine($"Showing products in the {selectedCategory} category:");
         }
 
         public static void ShowProductsByPriceRange(decimal min, decimal max)
