@@ -108,12 +108,11 @@ namespace Super_Market_Management_System.Services.ProductService
                 throw new Exception("Minimum price can not be greater than maximum price!");
 
         }
-        public static void ShowProductByName(string name) 
+        public static void ShowProductByName(string name)
         {
             var product = Products.Find(x => x.Name == name);
             if (product == null)
                 throw new Exception($"{name} not found!");
-            
         }
     }
 
