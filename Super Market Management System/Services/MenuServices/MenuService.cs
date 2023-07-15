@@ -1,6 +1,7 @@
 ﻿using ConsoleTables;
 using Super_Market_Management_System.Common.Enums;
 using Super_Market_Management_System.Common.Models;
+using Super_Market_Management_System.Services.ProductServices;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,11 +10,12 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Super_Market_Management_System.Services.MenuService
+namespace Super_Market_Management_System.Services.MenuServices
 {
-    public class MenuService 
+    public  class MenuService 
     {
-        private  static ProductService productService = new();
+        private static ProductService productService = new ();
+
         #region Product
         public static void MenuShowAllProducts()
         {
@@ -22,7 +24,7 @@ namespace Super_Market_Management_System.Services.MenuService
                 var products = productService.ShowAllProducts();
                 var table = new ConsoleTable("Id", "Name", "Category",
                     "Price", "Quantity");
-                if (products.Quantity == 0)
+                if (products.quantity == 0)
                 {
                     Console.WriteLine("No products yet.");
                     return;
@@ -40,7 +42,7 @@ namespace Super_Market_Management_System.Services.MenuService
                 Console.WriteLine(ex.Message);
             }
         }
-        public static void MenuAddProduct ()
+        public static  void MenuAddProduct ()
         {
             try
             {
@@ -52,7 +54,8 @@ namespace Super_Market_Management_System.Services.MenuService
                 decimal price = int.Parse (Console.ReadLine());
                 Console.WriteLine("Enter product`s quantity:");
                 int quantity = int.Parse(Console.ReadLine());
-                int productId = productService.AddProduct(name, category, price, quantity);
+                int productId = productService.AddProduct( name,  quantity,
+                category,  price);
 
                 Console.WriteLine($"Added product with ID: {productId}");
             }
@@ -62,7 +65,7 @@ namespace Super_Market_Management_System.Services.MenuService
                 Console.WriteLine(ex.Message);
             }
         }
-        public static void MenuRemoveProductById()
+        public  void MenuRemoveProductById()
         {
             try
             {
@@ -150,24 +153,51 @@ namespace Super_Market_Management_System.Services.MenuService
                 Console.WriteLine(ex.Message);
             }
         }
-
+        public static void MenuShowProductsByPriceRange()
+        {
+            try
+            {
+                Console.WriteLine("Enter minimum value: ");
+                decimal min = decimal.Parse(Console.ReadLine());
+                Console.WriteLine("Enter maximum value: ");
+                decimal max = decimal.Parse(Console.ReadLine());
+                productService.ShowProductsByPriceRange(min,max);
+                var products = productService.ShowAllProducts();
+                var table = new ConsoleTable("Id", "Name", "Category",
+                    "Price", "Quantity");
+                if (products.Quantity == 0)
+                {
+                    Console.WriteLine("No products yet.");
+                    return;
+                }
+                foreach (var product in products)
+                {
+                    table.AddRow(product.Id, product.Name, product.Category, product.Price, product.Quantity);
+                    table.Write();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void MenuShowProductByName()
+        {
+            try 
+            {
+                Console.WriteLine("Enter products name: ");
+                string name = Console.ReadLine();
+                productService.ShowProductByName(name);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
-    //{
-    //    public static void ShowProductsByCategory()
-    //    {
-    //        // Display logic
-    //        Console.WriteLine("Available categories:");
-    //        foreach (Category category in Enum.GetValues(typeof(Category)))
-    //        {
-    //            Console.WriteLine($"{(int)category}. {category}");
-    //        }
-
-    //        Console.WriteLine("Enter the category (number) to show products:");
-    //        int categoryNumber = int.Parse(Console.ReadLine());
-
-    //        // Call the implementation in the second service
-    //        ShowProductsByCategory(categoryNumber);
-    //    }
 }
 
 
+#endregion

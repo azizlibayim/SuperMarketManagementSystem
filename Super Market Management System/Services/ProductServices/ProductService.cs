@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Super_Market_Management_System.Services.ProductService
+namespace Super_Market_Management_System.Services.ProductServices
 {
     public class ProductService
     {

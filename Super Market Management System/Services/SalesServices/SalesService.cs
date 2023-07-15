@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Super_Market_Management_System.Services.SalesService
+namespace Super_Market_Management_System.Services.SalesServices
 {
     public class SalesService
     {

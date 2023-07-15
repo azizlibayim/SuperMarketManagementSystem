@@ -1,4 +1,5 @@
-﻿using Super_Market_Management_System.Services.MenuService;
+﻿using Super_Market_Management_System.Services.MenuServices;
+using Super_Market_Management_System.Services.MenuServices;
 
 namespace Super_Market_Management_System
 {
@@ -26,10 +27,10 @@ namespace Super_Market_Management_System
                 switch (option)
                 {
                     case 1:
-                        MenuService.MenuProducts();
+                        MenuService.();
                         break;
                     case 2:
-                        MenuService.SaleSubMenu();
+                        
                         break;
                     case 0:
                         Console.WriteLine("Exiting the system...");
