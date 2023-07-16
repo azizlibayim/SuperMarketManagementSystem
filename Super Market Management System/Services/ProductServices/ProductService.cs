@@ -10,32 +10,28 @@ namespace Super_Market_Management_System.Services.ProductServices
 {
     public class ProductService
     {
-        public static List<Product> Products;
+        private static List<Product> Products = new List<Product>();
 
         public ProductService()
         {
             Products = new();
         }
-        public List<Product> ShowAllProducts()
+        public static List<Product> ShowAllProducts()
         {
             return Products;
         }
 
-        public static int AddProduct(string name, int Id, int quantity,
-               string category, decimal price)
+        public static int AddProduct(string name, int quantity, string category, decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new FormatException("Name is empty!");
 
             if (quantity < 0)
                 throw new FormatException("Quantity is invalid!");
-            if (price < 0)
-                throw new FormatException("Price is lower than 0!");
-
+            
+            
             if (string.IsNullOrWhiteSpace(category))
                 throw new FormatException("Category field is empty!");
-
-
             bool isSuccessful
                 = Enum.TryParse<Category>(category, true, out Category parsedCategory);
 
@@ -44,6 +40,10 @@ namespace Super_Market_Management_System.Services.ProductServices
                 throw new InvalidDataException("Category not found!");
             }
 
+
+            if (price < 0)
+                throw new FormatException("Price is lower than 0!");
+
             var newProduct = new Product
             {
                 Name = name,
@@ -51,9 +51,7 @@ namespace Super_Market_Management_System.Services.ProductServices
                 Category = (Category)parsedCategory,
                 Price = price
             };
-
-            Products.Add(newProduct);
-
+            Products.Add(newProduct); 
             return newProduct.Id;
         }
 

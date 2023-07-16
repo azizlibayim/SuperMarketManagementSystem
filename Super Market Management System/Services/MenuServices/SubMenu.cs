@@ -34,24 +34,31 @@ namespace Super_Market_Management_System.Services.MenuServices
                 switch (option)
                 {
                     case 1:
+                        MenuService.MenuAddProduct();
                         Console.WriteLine("Product is added successfully!");
                         break;
                     case 2:
+                        MenuService.MenuUpdateProductById();
                         Console.WriteLine("Product is updated successfully!");
                         break;
                     case 3:
+                        MenuService.MenuRemoveProductById();
                         Console.WriteLine("Product is deleted successfully!");
                         break;
                         case 4:
+                        MenuService.MenuShowAllProducts();
                         Console.WriteLine("Here are all the products!");
                         break;
                         case 5:
+                        MenuService.MenuShowProductsByCategory();
                         Console.WriteLine("Here are all products!");
                         break;
                         case 6:
+                        MenuService.MenuShowProductsByPriceRange();
                         Console.WriteLine("Here are the products!");
                         break;
                         case 7:
+                        MenuService.MenuShowProductByName();
                         Console.WriteLine("Here is the product!");
                         break;
                     default:
@@ -87,7 +94,9 @@ namespace Super_Market_Management_System.Services.MenuServices
                     switch (option)
                     {
                         case 1:
+                        
                             Console.WriteLine("Sale is added successfully!");
+
                             break;
                         case 2:
                             Console.WriteLine("Sale is updated successfully!");

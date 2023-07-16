@@ -27,10 +27,10 @@ namespace Super_Market_Management_System
                 switch (option)
                 {
                     case 1:
-                        MenuService.();
+                        SubMenu.ProductSubMenu();
                         break;
                     case 2:
-                        
+                        SubMenu.SalesSubMenu();
                         break;
                     case 0:
                         Console.WriteLine("Exiting the system...");
@@ -43,5 +43,4 @@ namespace Super_Market_Management_System
             } while (option != 0);
         }
     }
-}
 }

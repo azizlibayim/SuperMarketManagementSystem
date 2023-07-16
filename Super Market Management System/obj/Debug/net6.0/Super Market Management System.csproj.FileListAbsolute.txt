@@ -13,3 +13,5 @@ C:\Users\Asus\Downloads\Super Market Management System\Super Market Management S
 C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.pdb
 C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.genruntimeconfig.cache
 C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\ref\Super Market Management System.dll
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\bin\Debug\net6.0\ConsoleTables.dll
+C:\Users\Asus\Downloads\Super Market Management System\Super Market Management System\obj\Debug\net6.0\Super Market Management System.csproj.CopyComplete

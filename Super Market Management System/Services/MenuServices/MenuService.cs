@@ -12,19 +12,20 @@ using System.Threading.Tasks;
 
 namespace Super_Market_Management_System.Services.MenuServices
 {
-    public  class MenuService 
+    public class MenuService
     {
-        private static ProductService productService = new ();
+
+        private static ProductService productService = new();
 
         #region Product
         public static void MenuShowAllProducts()
         {
             try
             {
-                var products = productService.ShowAllProducts();
+                var products = ProductService.ShowAllProducts();
                 var table = new ConsoleTable("Id", "Name", "Category",
                     "Price", "Quantity");
-                if (products.quantity == 0)
+                if (products.Count == 0)
                 {
                     Console.WriteLine("No products yet.");
                     return;
@@ -32,8 +33,8 @@ namespace Super_Market_Management_System.Services.MenuServices
                 foreach (var product in products)
                 {
                     table.AddRow(product.Id, product.Name, product.Category, product.Price, product.Quantity);
-                    table.Write();
                 }
+                table.Write();
             }
 
             catch (Exception ex)
@@ -42,37 +43,51 @@ namespace Super_Market_Management_System.Services.MenuServices
                 Console.WriteLine(ex.Message);
             }
         }
-        public static  void MenuAddProduct ()
+        public static void MenuAddProduct()
         {
             try
             {
-                Console.WriteLine("Enter product`s name:");
+                Console.WriteLine("Enter product's name:");
                 string name = Console.ReadLine();
-                Console.WriteLine( "Enter product`s category:");
-                string category = Console.ReadLine();
-                Console.WriteLine("Enter product`s price:");
-                decimal price = int.Parse (Console.ReadLine());
-                Console.WriteLine("Enter product`s quantity:");
-                int quantity = int.Parse(Console.ReadLine());
-                int productId = productService.AddProduct( name,  quantity,
-                category,  price);
 
+                Console.WriteLine("Choose a category:");
+                foreach (Category category in Enum.GetValues(typeof(Category)))
+                {
+                    Console.WriteLine($"{(int)category}. {category}");
+                }
+
+                Console.WriteLine("Enter the category number:");
+                string categoryInput = Console.ReadLine();
+
+                if (!int.TryParse(categoryInput, out int categoryNumber) || !Enum.IsDefined(typeof(Category), categoryNumber))
+                {
+                    throw new InvalidDataException("Invalid category selection!");
+                }
+
+                Category parsedCategory = (Category)(object)categoryNumber;
+
+                Console.WriteLine("Enter product's price:");
+                decimal price = decimal.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter product's quantity:");
+                int quantity = int.Parse(Console.ReadLine());
+
+                int productId = ProductService.AddProduct(name, quantity, categoryInput, price);
                 Console.WriteLine($"Added product with ID: {productId}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Oops! Got an error!");
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Oops! Got an error! {ex.Message}");
             }
         }
-        public  void MenuRemoveProductById()
+        public static void MenuRemoveProductById()
         {
             try
             {
                 Console.WriteLine("Enter product's ID:");
                 int productId = int.Parse(Console.ReadLine());
 
-                productService.RemoveProductById(productId);
+                ProductService.RemoveProductById(productId);
 
                 Console.WriteLine($"Successfully deleted product with ID: {productId}");
             }
@@ -112,7 +127,7 @@ namespace Super_Market_Management_System.Services.MenuServices
 
                 Console.WriteLine("Enter the new quantity:");
                 int newQuantity = int.Parse(Console.ReadLine());
-                productService.UpdateProductById(Id, newName, newQuantity, newCategory, newPrice);
+                ProductService.UpdateProductById(Id, newName, newQuantity, newCategory, newPrice);
 
                 Console.WriteLine($"Product with ID {Id} has been updated.");
             }
@@ -139,7 +154,7 @@ namespace Super_Market_Management_System.Services.MenuServices
                     Console.WriteLine("Invalid category number!");
                     return;
                 }
-                var products = productService.ShowProductsByCategory();
+                var products = ProductService.ShowAllProducts();
                 var table = new ConsoleTable("Id", "Name", "Category", "Price", "Quantity");
                 foreach (var product in products) 
                 {
@@ -161,11 +176,11 @@ namespace Super_Market_Management_System.Services.MenuServices
                 decimal min = decimal.Parse(Console.ReadLine());
                 Console.WriteLine("Enter maximum value: ");
                 decimal max = decimal.Parse(Console.ReadLine());
-                productService.ShowProductsByPriceRange(min,max);
-                var products = productService.ShowAllProducts();
+                ProductService.ShowProductsByPriceRange(min,max);
+                var products = ProductService.ShowAllProducts();
                 var table = new ConsoleTable("Id", "Name", "Category",
                     "Price", "Quantity");
-                if (products.Quantity == 0)
+                if (products.Count == 0)
                 {
                     Console.WriteLine("No products yet.");
                     return;
@@ -188,7 +203,7 @@ namespace Super_Market_Management_System.Services.MenuServices
             {
                 Console.WriteLine("Enter products name: ");
                 string name = Console.ReadLine();
-                productService.ShowProductByName(name);
+                ProductService.ShowProductByName(name);
             }
             catch (Exception ex)
             {

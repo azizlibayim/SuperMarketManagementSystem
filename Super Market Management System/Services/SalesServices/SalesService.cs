@@ -20,6 +20,8 @@ namespace Super_Market_Management_System.Services.SalesServices
             SalesItems = new();
             Sales = new();
         }
+    }
+}
 
 
 
