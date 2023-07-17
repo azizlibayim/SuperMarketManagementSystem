@@ -1,4 +1,5 @@
-﻿using Super_Market_Management_System.Common.Enums;
+﻿using ConsoleTables;
+using Super_Market_Management_System.Common.Enums;
 using Super_Market_Management_System.Common.Models;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,6 @@ namespace Super_Market_Management_System.Services.ProductServices
         {
             return Products;
         }
-
         public static int AddProduct(string name, int quantity, string category, decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -54,7 +54,6 @@ namespace Super_Market_Management_System.Services.ProductServices
             Products.Add(newProduct); 
             return newProduct.Id;
         }
-
         public static void RemoveProductById(int Id)
         {
             var existingProduct = Products.FirstOrDefault(x => x.Id == Id);
@@ -62,7 +61,6 @@ namespace Super_Market_Management_System.Services.ProductServices
                 throw new Exception($"{Id} not found!");
             Products = Products.Where(x => x.Id != Id).ToList();
         }
-
         public static void UpdateProductById(int Id, string newName, int newQuantity, Category newCategory, decimal newPrice)
         {
             var existingProduct = Products.FirstOrDefault(x => x.Id == Id);
@@ -74,32 +72,49 @@ namespace Super_Market_Management_System.Services.ProductServices
             existingProduct.Price = newPrice;
             
         }
-
         public static void ShowProductsByCategory(int categoryNumber)
         {
-
             if (!Enum.IsDefined(typeof(Category), categoryNumber))
             {
                 Console.WriteLine("Invalid category number!");
                 return;
             }
-            Category selectedCategory = (Category)categoryNumber;
-            var productsInCategory = Products.Where(x => x.Category == selectedCategory);
-            Console.WriteLine($"Showing products in the {selectedCategory} category:");
-        }
 
-        public static void ShowProductsByPriceRange(decimal min, decimal max)
+            Category selectedCategory = (Category)categoryNumber;
+            var productsInCategory = Products.Where(x => x.Category == selectedCategory).ToList();
+
+            Console.WriteLine($"Showing products in the {selectedCategory} category:");
+
+            if (productsInCategory.Count == 0)
+            {
+                Console.WriteLine("No products found in this category.");
+            }
+            else
+            {
+                var table = new ConsoleTable("Id", "Name", "Category", "Price", "Quantity");
+                foreach (var product in productsInCategory)
+                {
+                    table.AddRow(product.Id, product.Name, product.Category, product.Price, product.Quantity);
+                }
+                table.Write();
+            }
+        }
+        public static List<Product> ShowProductsByPriceRange(decimal min, decimal max)
         {
-            var pricerange = Products.Where(x => x.Price >= min && x.Price <= max).ToList();
+            var productsinrange = Products.Where(x => x.Price >= min && x.Price <= max).ToList();
+            return productsinrange;
             if (min > max)
                 throw new Exception("Minimum price can not be greater than maximum price!");
 
         }
-        public static void ShowProductByName(string name)
+        public static List<Product> ShowProductByName(string name)
         {
-            var product = Products.Find(x => x.Name == name);
-            if (product == null)
+            var existingproduct = Products.Find(x => x.Name == name);
+            if (existingproduct == null)
                 throw new Exception($"{name} not found!");
+            var productbyname = Products.Where(x => x.Name == name).ToList();
+            Products = productbyname;
+            return productbyname;
         }
     }
 

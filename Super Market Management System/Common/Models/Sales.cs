@@ -10,14 +10,16 @@ namespace Super_Market_Management_System.Common.Models
 {
     public class Sale:BaseEntity
     {
-        private static int _count = 0;
+        private static int _count = 1000;
         public Sale()
-        {
+        {Date = DateTime.Now;
+         SalesItems = new List<SalesItems>();
             Id = _count;
             _count++;
         }
+        Product Product { get; set; }
         public decimal TotalAmount { get; set; }
-        public string Items { get; set; }
+        public List <SalesItems> SalesItems { get; set; }
         public DateTime Date { get; set;}
     }
 }

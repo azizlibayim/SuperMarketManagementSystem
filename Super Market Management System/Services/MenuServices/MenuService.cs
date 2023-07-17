@@ -2,13 +2,16 @@
 using Super_Market_Management_System.Common.Enums;
 using Super_Market_Management_System.Common.Models;
 using Super_Market_Management_System.Services.ProductServices;
+using Super_Market_Management_System.Services.SalesServices;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Super_Market_Management_System.Services.MenuServices
 {
@@ -99,7 +102,7 @@ namespace Super_Market_Management_System.Services.MenuServices
         }
         public static void MenuUpdateProductById()
         {
-            try 
+            try
             {
                 Console.WriteLine("Enter product's ID:");
                 int Id = int.Parse(Console.ReadLine());
@@ -149,18 +152,7 @@ namespace Super_Market_Management_System.Services.MenuServices
                 Console.WriteLine("Enter the category number:");
                 int categoryNumber = int.Parse(Console.ReadLine());
 
-                if (!Enum.IsDefined(typeof(Category), categoryNumber))
-                {
-                    Console.WriteLine("Invalid category number!");
-                    return;
-                }
-                var products = ProductService.ShowAllProducts();
-                var table = new ConsoleTable("Id", "Name", "Category", "Price", "Quantity");
-                foreach (var product in products) 
-                {
-                    table.AddRow(product.Id, product.Name, product.Category, product.Price, product.Quantity);
-                    table.Write();
-                }
+                ProductService.ShowProductsByCategory(categoryNumber);
             }
             catch (Exception ex)
             {
@@ -176,20 +168,22 @@ namespace Super_Market_Management_System.Services.MenuServices
                 decimal min = decimal.Parse(Console.ReadLine());
                 Console.WriteLine("Enter maximum value: ");
                 decimal max = decimal.Parse(Console.ReadLine());
-                ProductService.ShowProductsByPriceRange(min,max);
-                var products = ProductService.ShowAllProducts();
+                ProductService.ShowProductsByPriceRange(min, max);
+
+                var productsinrange = ProductService.ShowProductsByPriceRange(min, max);
+
                 var table = new ConsoleTable("Id", "Name", "Category",
                     "Price", "Quantity");
-                if (products.Count == 0)
+                if (productsinrange.Count == 0)
                 {
                     Console.WriteLine("No products yet.");
                     return;
                 }
-                foreach (var product in products)
+                foreach (var product in productsinrange)
                 {
                     table.AddRow(product.Id, product.Name, product.Category, product.Price, product.Quantity);
-                    table.Write();
                 }
+                table.Write();
             }
             catch (Exception ex)
             {
@@ -199,11 +193,180 @@ namespace Super_Market_Management_System.Services.MenuServices
         }
         public static void MenuShowProductByName()
         {
-            try 
+            try
             {
                 Console.WriteLine("Enter products name: ");
                 string name = Console.ReadLine();
+                var existingproduct = ProductService.ShowProductByName(name);
                 ProductService.ShowProductByName(name);
+                var table = new ConsoleTable("Id", "Name", "Category",
+                    "Price", "Quantity");
+
+                foreach (var product in existingproduct)
+                {
+                    table.AddRow(product.Id, product.Name, product.Category, product.Price, product.Quantity);
+                }
+                table.Write();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+            }
+        }
+        #endregion
+
+
+        private static SalesService saleService = new SalesService();
+        #region Sale
+        public static void MenuShowAllSales()
+        {
+            try
+            {
+                var sales = SalesService.ShowAllSales();
+                var table = new ConsoleTable("Id", "Total Amount", "Date");
+                if (sales.Count == 0)
+                {
+                    Console.WriteLine("No sales yet.");
+                    return;
+                }
+                foreach (var sale in sales)
+                {
+                    table.AddRow(sale.Id, sale.TotalAmount, sale.Date);
+                }
+                table.Write();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+        public static void MenuShowTheBill(DateTime saleDate, List<SalesItems> saleItems) 
+        {
+            var table = new ConsoleTable("Date", "Product", "Count", "Total Price");
+            decimal totalPrice = 0;
+            foreach (var saleItem in saleItems)
+            {
+                decimal itemPrice = saleItem.Product.Price * saleItem.Count;
+                table.AddRow(saleDate, saleItem.Product.Name, saleItem.Count, itemPrice);
+                totalPrice += itemPrice;
+            }
+            table.Write();
+            Console.WriteLine($"Total Price: {totalPrice}");
+        }
+
+        public static void MenuAddSale()
+        {
+            try
+            {
+                while (true)
+                {
+                    Console.WriteLine("Enter product's ID (or enter 0 to finish):");
+                    int productId = int.Parse(Console.ReadLine());
+
+                    if (productId == 0)
+                        break;
+
+                    Console.WriteLine("Enter product's quantity:");
+                    int count = int.Parse(Console.ReadLine());
+                    DateTime date = DateTime.Now;
+                    var salesItems = new List<SalesItems>();
+
+                    int saleId = SalesService.AddSale(productId, count);
+                    SalesService.ShowAllSaleItems();
+                    
+                    var items = SalesService.ShowAllSaleItems();
+                    var table = new ConsoleTable("Id", "Product", "Count");
+                    if (items.Count == 0)
+                    {
+                        Console.WriteLine("No sale items yet.");
+                        return;
+                    }
+                    foreach (var saleItem in items)
+                    {
+                        string productName = saleItem.Product.Name;
+                        table.AddRow(saleItem.Id, saleItem.Product.Name, saleItem.Count);
+                    }
+                    table.Write();
+                    SalesService.ShowTheBill();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Oops! Got an error! {ex.Message}");
+            }
+        }
+        public static void MenuRemoveSaleById()
+        {
+            try
+            {
+                Console.WriteLine("Enter sale's ID:");
+                int Id = int.Parse(Console.ReadLine());
+
+                SalesService.RemoveSaleById(Id);
+
+                Console.WriteLine($"Successfully deleted sale with ID: {Id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void MenuShowSalesByPeriod()
+        {
+            try
+            {
+                Console.WriteLine("Enter start date:(mm/dd/yyyy) ");
+                DateTime start = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Enter end date:(mm/dd/yyyy)");
+                DateTime end = DateTime.Parse(Console.ReadLine());
+                SalesService.ShowSalesByPeriod(start, end);
+
+                var salesInPeriod = SalesService.ShowSalesByPeriod(start, end);
+                var table = new ConsoleTable("Id", "Total Amount", "Date");
+                if (salesInPeriod.Count == 0)
+                {
+                    Console.WriteLine("No sales yet.");
+                    return;
+                }
+                foreach (var sale in salesInPeriod)
+                {
+                    table.AddRow(sale.Id, sale.TotalAmount, sale.Date);
+                }
+                table.Write();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops! Got an error!");
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void MenuShowSalesByDate()
+        {
+            try
+            {
+                Console.WriteLine("Enter the date : mm/dd/yyyy ");
+                DateTime date = DateTime.Parse(Console.ReadLine());
+                SalesService.ShowSalesByDate(date);
+                var salesOnDate = SalesService.ShowSalesByDate(date);
+                var table = new ConsoleTable("Id", "Total Amount", "Date");
+                if (salesOnDate.Count == 0)
+                {
+                    Console.WriteLine("No sales yet.");
+                    return;
+                }
+                foreach (var sale in salesOnDate)
+                {
+                    table.AddRow(sale.Id, sale.TotalAmount, sale.Date);
+                }
+                table.Write();
             }
             catch (Exception ex)
             {
@@ -214,5 +377,17 @@ namespace Super_Market_Management_System.Services.MenuServices
     }
 }
 
+           
+    
+
+        
+
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Oops! Got an error! {ex.Message}");
+            //}
+
+        
+    
 
 #endregion

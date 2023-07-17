@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace Super_Market_Management_System.Common.Models
 {
-    public class Product:BaseEntity
+    public class Product : BaseEntity
     {
-        private static int _count = 0;
-        
+        private static int _count = 1;
         public Product()
         {
             Id = _count;
@@ -23,6 +22,6 @@ namespace Super_Market_Management_System.Common.Models
         public decimal Price { get; set; }
         public Category Category { get; set; }
         public int Quantity { get; set; }
-        
+
     }
 }
